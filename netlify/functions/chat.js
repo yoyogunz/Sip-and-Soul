@@ -16,25 +16,28 @@ exports.handler = async function(event) {
   try {
     const { drink, personality, systemPrompt } = JSON.parse(event.body);
 
+    const prompt = systemPrompt + '\n\nSpirit/Mocktail preference: ' + drink + '\nPersonality: ' + personality + '\n\nRespond with ONLY the JSON object, no other text.';
+
     const payload = JSON.stringify({
-      model: 'claude-sonnet-4-5',
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: [{
-        role: 'user',
-        content: 'Spirit/Mocktail preference: ' + drink + '\nPersonality: ' + personality + '\n\nCraft my perfect drink. Respond with ONLY the JSON object, no other text.'
-      }]
+      contents: [{
+        parts: [{ text: prompt }]
+      }],
+      generationConfig: {
+        temperature: 1.0,
+        maxOutputTokens: 1024
+      }
     });
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    const model = 'gemini-1.5-flash';
 
     const rawResponse = await new Promise((resolve, reject) => {
       const options = {
-        hostname: 'api.anthropic.com',
-        path: '/v1/messages',
+        hostname: 'generativelanguage.googleapis.com',
+        path: '/v1beta/models/' + model + ':generateContent?key=' + apiKey,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
           'Content-Length': Buffer.byteLength(payload)
         }
       };
@@ -50,29 +53,29 @@ exports.handler = async function(event) {
       req.end();
     });
 
-    console.log('Raw Anthropic response:', rawResponse);
+    console.log('Raw Gemini response:', rawResponse);
 
     const parsed = JSON.parse(rawResponse);
 
-    // Extract the text content from the response
-    const text = parsed.content && parsed.content[0] && parsed.content[0].text
-      ? parsed.content[0].text
-      : '';
+    const text = parsed.candidates &&
+                 parsed.candidates[0] &&
+                 parsed.candidates[0].content &&
+                 parsed.candidates[0].content.parts &&
+                 parsed.candidates[0].content.parts[0]
+                 ? parsed.candidates[0].content.parts[0].text
+                 : '';
 
-    console.log('Text from Claude:', text);
+    console.log('Text from Gemini:', text);
 
-    // Try to extract JSON - first strip markdown fences, then try regex
+    // Strip markdown fences and extract JSON block
     let clean = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-
-    // If it still doesn't start with {, try to find JSON block via regex
     if (!clean.startsWith('{')) {
       const match = clean.match(/\{[\s\S]*\}/);
       if (match) clean = match[0];
     }
 
-    console.log('Cleaned text:', clean);
+    console.log('Clean JSON:', clean);
 
-    // Return the full parsed API response plus the extracted clean JSON string
     return {
       statusCode: 200,
       headers: {
