@@ -3,484 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sip & Soul — AI Mixologist</title>
+<title>Sip &amp; Soul - AI Mixologist</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream: #F5F0E8;
-    --dark: #1A1208;
-    --amber: #C8882A;
-    --amber-light: #E8A84A;
-    --rust: #8B3A1A;
-    --sage: #5C7A5A;
-    --glass: rgba(255,255,255,0.08);
-    --border: rgba(200,136,42,0.25);
-  }
-
+  :root { --cream: #F5F0E8; --dark: #1A1208; --amber: #C8882A; --amber-light: #E8A84A; --rust: #8B3A1A; --sage: #5C7A5A; --glass: rgba(255,255,255,0.08); --border: rgba(200,136,42,0.25); }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background-color: var(--dark);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;h
-    min-height: 100vh;
-    overflow-x: hidden;h
-    position: relative;
-  }
-
-  /* Atmospheric background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(200,136,42,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 80% 80%, rgba(139,58,26,0.15) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(92,122,90,0.06) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Noise texture overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* Header */
-  header {
-    padding: 52px 0 32px;
-    text-align: center;
-    position: relative;
-  }
-
-  .logo-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
-
-  .logo-divider {
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--amber), transparent);
-  }
-
-  .logo-icon {
-    font-size: 28px;
-    filter: drop-shadow(0 0 12px rgba(200,136,42,0.6));
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    background: linear-gradient(135deg, var(--cream) 0%, var(--amber-light) 60%, var(--amber) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .tagline {
-    margin-top: 12px;
-    font-size: 0.95rem;
-    color: rgba(245,240,232,0.5);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 300;
-  }
-
-  /* Chat container */
-  .chat-wrapper {
-    margin: 32px 0;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    overflow: hidden;
-    background: rgba(26,18,8,0.7);
-    backdrop-filter: blur(20px);
-    box-shadow: 
-      0 0 0 1px rgba(200,136,42,0.08),
-      0 32px 64px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(245,240,232,0.06);
-  }
-
-  .chat-header {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(200,136,42,0.06);
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--sage);
-    box-shadow: 0 0 8px var(--sage);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .chat-header-text {
-    font-size: 0.85rem;
-    color: rgba(245,240,232,0.6);
-    letter-spacing: 0.04em;
-  }
-
-  .chat-messages {
-    padding: 28px 24px;
-    min-height: 280px;
-    max-height: 480px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-
+  body { background-color: var(--dark); color: var(--cream); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; position: relative; }
+  body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse 60% 50% at 20% 20%, rgba(200,136,42,0.12) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 80% 80%, rgba(139,58,26,0.15) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 50% 50%, rgba(92,122,90,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+  body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.4; }
+  .container { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 52px 0 32px; text-align: center; position: relative; }
+  .logo-line { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px; }
+  .logo-divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+  .logo-icon { font-size: 28px; filter: drop-shadow(0 0 12px rgba(200,136,42,0.6)); }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; background: linear-gradient(135deg, var(--cream) 0%, var(--amber-light) 60%, var(--amber) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .tagline { margin-top: 12px; font-size: 0.95rem; color: rgba(245,240,232,0.5); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 300; }
+  .chat-wrapper { margin: 32px 0; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: rgba(26,18,8,0.7); backdrop-filter: blur(20px); box-shadow: 0 0 0 1px rgba(200,136,42,0.08), 0 32px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(245,240,232,0.06); }
+  .chat-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: rgba(200,136,42,0.06); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 8px var(--sage); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .chat-header-text { font-size: 0.85rem; color: rgba(245,240,232,0.6); letter-spacing: 0.04em; }
+  .chat-messages { padding: 28px 24px; min-height: 280px; max-height: 480px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .chat-messages::-webkit-scrollbar { width: 4px; }
   .chat-messages::-webkit-scrollbar-track { background: transparent; }
   .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  /* Messages */
-  .message {
-    display: flex;
-    gap: 12px;
-    animation: fadeSlideIn 0.4s ease forwards;
-    opacity: 0;
-  }
-
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .message.user {
-    flex-direction: row-reverse;
-  }
-
-  .avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-  }
-
-  .avatar.bot {
-    background: linear-gradient(135deg, var(--amber), var(--rust));
-    box-shadow: 0 0 16px rgba(200,136,42,0.3);
-  }
-
-  .avatar.user-av {
-    background: rgba(92,122,90,0.3);
-    border-color: rgba(92,122,90,0.4);
-  }
-
-  .bubble {
-    max-width: 78%;
-    padding: 14px 18px;
-    border-radius: 16px;
-    font-size: 0.92rem;
-    line-height: 1.65;
-  }
-
-  .bubble.bot {
-    background: rgba(200,136,42,0.1);
-    border: 1px solid rgba(200,136,42,0.2);
-    border-top-left-radius: 4px;
-    color: var(--cream);
-  }
-
-  .bubble.user {
-    background: rgba(92,122,90,0.2);
-    border: 1px solid rgba(92,122,90,0.3);
-    border-top-right-radius: 4px;
-    color: var(--cream);
-    text-align: right;
-  }
-
-  /* Recipe card inside bubble */
-  .recipe-card {
-    margin-top: 14px;
-    padding: 16px;
-    background: rgba(26,18,8,0.6);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-  }
-
-  .recipe-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-style: italic;
-    color: var(--amber-light);
-    margin-bottom: 4px;
-  }
-
-  .recipe-subtitle {
-    font-size: 0.75rem;
-    color: rgba(245,240,232,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 14px;
-  }
-
-  .recipe-section {
-    margin-bottom: 12px;
-  }
-
-  .recipe-section-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--amber);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  .recipe-section ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .recipe-section ul li {
-    font-size: 0.88rem;
-    color: rgba(245,240,232,0.8);
-    padding: 2px 0;
-    padding-left: 14px;
-    position: relative;
-  }
-
-  .recipe-section ul li::before {
-    content: '·';
-    position: absolute;
-    left: 0;
-    color: var(--amber);
-  }
-
-  .recipe-section p {
-    font-size: 0.88rem;
-    color: rgba(245,240,232,0.75);
-    line-height: 1.6;
-  }
-
-  .personality-tag {
-    display: inline-block;
-    padding: 3px 10px;
-    background: rgba(200,136,42,0.15);
-    border: 1px solid rgba(200,136,42,0.3);
-    border-radius: 20px;
-    font-size: 0.78rem;
-    color: var(--amber-light);
-    margin-top: 8px;
-  }
-
-  /* Typing indicator */
-  .typing-indicator {
-    display: flex;
-    gap: 12px;
-    animation: fadeSlideIn 0.3s ease forwards;
-    opacity: 0;
-  }
-
-  .typing-dots {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 14px 18px;
-    background: rgba(200,136,42,0.1);
-    border: 1px solid rgba(200,136,42,0.2);
-    border-radius: 16px;
-    border-top-left-radius: 4px;
-  }
-
-  .typing-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--amber);
-    animation: bounce 1.2s infinite;
-  }
-
+  .message { display: flex; gap: 12px; animation: fadeSlideIn 0.4s ease forwards; opacity: 0; }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .message.user { flex-direction: row-reverse; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; border: 1px solid var(--border); }
+  .avatar.bot { background: linear-gradient(135deg, var(--amber), var(--rust)); box-shadow: 0 0 16px rgba(200,136,42,0.3); }
+  .avatar.user-av { background: rgba(92,122,90,0.3); border-color: rgba(92,122,90,0.4); }
+  .bubble { max-width: 78%; padding: 14px 18px; border-radius: 16px; font-size: 0.92rem; line-height: 1.65; }
+  .bubble.bot { background: rgba(200,136,42,0.1); border: 1px solid rgba(200,136,42,0.2); border-top-left-radius: 4px; color: var(--cream); }
+  .bubble.user { background: rgba(92,122,90,0.2); border: 1px solid rgba(92,122,90,0.3); border-top-right-radius: 4px; color: var(--cream); text-align: right; }
+  .recipe-card { margin-top: 14px; padding: 16px; background: rgba(26,18,8,0.6); border: 1px solid var(--border); border-radius: 12px; }
+  .recipe-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; color: var(--amber-light); margin-bottom: 4px; }
+  .recipe-subtitle { font-size: 0.75rem; color: rgba(245,240,232,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .recipe-section { margin-bottom: 12px; }
+  .recipe-section-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 6px; font-weight: 500; }
+  .recipe-section ul { list-style: none; padding: 0; }
+  .recipe-section ul li { font-size: 0.88rem; color: rgba(245,240,232,0.8); padding: 2px 0; padding-left: 14px; position: relative; }
+  .recipe-section ul li::before { content: '·'; position: absolute; left: 0; color: var(--amber); }
+  .recipe-section p { font-size: 0.88rem; color: rgba(245,240,232,0.75); line-height: 1.6; }
+  .personality-tag { display: inline-block; padding: 3px 10px; background: rgba(200,136,42,0.15); border: 1px solid rgba(200,136,42,0.3); border-radius: 20px; font-size: 0.78rem; color: var(--amber-light); margin-top: 8px; }
+  .typing-indicator { display: flex; gap: 12px; animation: fadeSlideIn 0.3s ease forwards; opacity: 0; }
+  .typing-dots { display: flex; align-items: center; gap: 5px; padding: 14px 18px; background: rgba(200,136,42,0.1); border: 1px solid rgba(200,136,42,0.2); border-radius: 16px; border-top-left-radius: 4px; }
+  .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); animation: bounce 1.2s infinite; }
   .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
   .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-6px); opacity: 1; }
-  }
-
-  /* Input area */
-  .input-area {
-    padding: 20px 24px;
-    border-top: 1px solid var(--border);
-    background: rgba(200,136,42,0.03);
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-  }
-
-  .input-fields {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .field-group {
-    display: flex;
-    gap: 8px;
-  }
-
-  .field-wrap {
-    flex: 1;
-    position: relative;
-  }
-
-  .field-label {
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(245,240,232,0.4);
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    background: rgba(245,240,232,0.05);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 11px 14px;
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-
-  input[type="text"]:focus {
-    border-color: rgba(200,136,42,0.6);
-    background: rgba(245,240,232,0.08);
-  }
-
-  input[type="text"]::placeholder {
-    color: rgba(245,240,232,0.25);
-    font-size: 0.85rem;
-  }
-
-  .send-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--amber), var(--rust));
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
-    box-shadow: 0 4px 16px rgba(200,136,42,0.3);
-    flex-shrink: 0;
-    align-self: flex-end;
-  }
-
-  .send-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(200,136,42,0.4);
-  }
-
+  @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
+  .input-area { padding: 20px 24px; border-top: 1px solid var(--border); background: rgba(200,136,42,0.03); }
+  .input-row { display: flex; gap: 10px; align-items: flex-end; }
+  .input-fields { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .field-group { display: flex; gap: 8px; }
+  .field-wrap { flex: 1; position: relative; }
+  .field-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(245,240,232,0.4); margin-bottom: 5px; font-weight: 500; }
+  input[type="text"] { width: 100%; background: rgba(245,240,232,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s, background 0.2s; }
+  input[type="text"]:focus { border-color: rgba(200,136,42,0.6); background: rgba(245,240,232,0.08); }
+  input[type="text"]::placeholder { color: rgba(245,240,232,0.25); font-size: 0.85rem; }
+  .send-btn { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--amber), var(--rust)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s; box-shadow: 0 4px 16px rgba(200,136,42,0.3); flex-shrink: 0; align-self: flex-end; }
+  .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,136,42,0.4); }
   .send-btn:active:not(:disabled) { transform: translateY(0); }
   .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  /* Suggestion chips */
-  .suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .chip {
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    font-size: 0.8rem;
-    color: rgba(245,240,232,0.6);
-    cursor: pointer;
-    transition: all 0.2s;
-    background: rgba(200,136,42,0.05);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .chip:hover {
-    border-color: var(--amber);
-    color: var(--amber-light);
-    background: rgba(200,136,42,0.1);
-  }
-
-  .suggestions-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(245,240,232,0.3);
-    margin-bottom: 8px;
-  }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    padding: 24px 0 40px;
-    font-size: 0.78rem;
-    color: rgba(245,240,232,0.2);
-    letter-spacing: 0.04em;
-  }
-
-  footer span {
-    color: var(--amber);
-    opacity: 0.6;
-  }
-
-  @media (max-width: 520px) {
-    .field-group { flex-direction: column; }
-    .bubble { max-width: 90%; }
-  }
+  .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .chip { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 0.8rem; color: rgba(245,240,232,0.6); cursor: pointer; transition: all 0.2s; background: rgba(200,136,42,0.05); font-family: 'DM Sans', sans-serif; }
+  .chip:hover { border-color: var(--amber); color: var(--amber-light); background: rgba(200,136,42,0.1); }
+  .suggestions-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(245,240,232,0.3); margin-bottom: 8px; }
+  footer { text-align: center; padding: 24px 0 40px; font-size: 0.78rem; color: rgba(245,240,232,0.2); letter-spacing: 0.04em; }
+  footer span { color: var(--amber); opacity: 0.6; }
+  @media (max-width: 520px) { .field-group { flex-direction: column; } .bubble { max-width: 90%; } }
 </style>
 </head>
 <body>
-
 <div class="container">
   <header>
     <div class="logo-line">
@@ -488,16 +82,14 @@
       <div class="logo-icon">🍹</div>
       <div class="logo-divider"></div>
     </div>
-    <h1>Sip & Soul</h1>
+    <h1>Sip &amp; Soul</h1>
     <p class="tagline">Your AI Mixologist — Crafted for Your Personality</p>
   </header>
-
   <div class="chat-wrapper">
     <div class="chat-header">
       <div class="status-dot"></div>
       <span class="chat-header-text">Mixologist is ready to craft your perfect drink</span>
     </div>
-
     <div class="chat-messages" id="chatMessages">
       <div class="message" style="animation-delay:0s">
         <div class="avatar bot">🍸</div>
@@ -507,7 +99,6 @@
         </div>
       </div>
     </div>
-
     <div class="input-area">
       <div class="suggestions-label">Try a quick combo</div>
       <div class="suggestions">
@@ -518,7 +109,6 @@
         <div class="chip" onclick="fillSuggestion('Whiskey', 'ENTJ')">Whiskey · ENTJ</div>
         <div class="chip" onclick="fillSuggestion('Mocktail', 'ISFP')">Mocktail · ISFP</div>
       </div>
-
       <div class="input-row">
         <div class="input-fields">
           <div class="field-group">
@@ -532,33 +122,14 @@
             </div>
           </div>
         </div>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Craft my drink">
-          ✦
-        </button>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Craft my drink">✦</button>
       </div>
     </div>
   </div>
-
   <footer>Powered by <span>Claude AI</span> · Built with curiosity &amp; craft</footer>
 </div>
-
 <script>
-  const SYSTEM_PROMPT = `You are Sip & Soul, an elegant and creative AI mixologist with deep knowledge of cocktails, mocktails, flavor profiles, and personality psychology. 
-
-When given a drink preference (spirit type or mocktail) and a personality (MBTI type, adjectives, or mood), you craft a unique, personalized drink recipe.
-
-Your response MUST be valid JSON in this exact format:
-{
-  "drinkName": "Creative drink name",
-  "tagline": "Short evocative tagline (max 8 words)",
-  "personalityMatch": "One sentence explaining why this suits their personality",
-  "ingredients": ["ingredient 1 with amount", "ingredient 2 with amount", "..."],
-  "instructions": "2-3 sentence preparation method. Be specific and vivid.",
-  "garnish": "Garnish suggestion",
-  "vibe": "2-3 words describing the drink's mood/energy"
-}
-
-Be creative with drink names. Make the recipe feel genuinely tailored to the personality. Keep ingredient lists to 4-6 items. Never include markdown or extra text outside the JSON.`;
+  const SYSTEM_PROMPT = "You are Sip & Soul, an elegant and creative AI mixologist with deep knowledge of cocktails, mocktails, flavor profiles, and personality psychology. When given a drink preference (spirit type or mocktail) and a personality (MBTI type, adjectives, or mood), you craft a unique, personalized drink recipe. Your response MUST be valid JSON in this exact format: { \"drinkName\": \"Creative drink name\", \"tagline\": \"Short evocative tagline (max 8 words)\", \"personalityMatch\": \"One sentence explaining why this suits their personality\", \"ingredients\": [\"ingredient 1 with amount\", \"ingredient 2 with amount\"], \"instructions\": \"2-3 sentence preparation method. Be specific and vivid.\", \"garnish\": \"Garnish suggestion\", \"vibe\": \"2-3 words describing the drink mood\" } Be creative with drink names. Make the recipe feel genuinely tailored to the personality. Keep ingredient lists to 4-6 items. Never include markdown or extra text outside the JSON.";
 
   function fillSuggestion(drink, personality) {
     document.getElementById('drinkInput').value = drink;
@@ -569,11 +140,8 @@ Be creative with drink names. Make the recipe feel genuinely tailored to the per
   function addMessage(content, isUser) {
     const messages = document.getElementById('chatMessages');
     const div = document.createElement('div');
-    div.className = `message ${isUser ? 'user' : ''}`;
-    div.innerHTML = `
-      <div class="avatar ${isUser ? 'user-av' : 'bot'}">${isUser ? '👤' : '🍸'}</div>
-      <div class="bubble ${isUser ? 'user' : 'bot'}">${content}</div>
-    `;
+    div.className = 'message ' + (isUser ? 'user' : '');
+    div.innerHTML = '<div class="avatar ' + (isUser ? 'user-av' : 'bot') + '">' + (isUser ? '👤' : '🍸') + '</div><div class="bubble ' + (isUser ? 'user' : 'bot') + '">' + content + '</div>';
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
   }
@@ -583,12 +151,7 @@ Be creative with drink names. Make the recipe feel genuinely tailored to the per
     const div = document.createElement('div');
     div.className = 'typing-indicator';
     div.id = 'typingIndicator';
-    div.innerHTML = `
-      <div class="avatar bot">🍸</div>
-      <div class="typing-dots">
-        <span></span><span></span><span></span>
-      </div>
-    `;
+    div.innerHTML = '<div class="avatar bot">🍸</div><div class="typing-dots"><span></span><span></span><span></span></div>';
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
   }
@@ -599,85 +162,49 @@ Be creative with drink names. Make the recipe feel genuinely tailored to the per
   }
 
   function buildRecipeHTML(recipe) {
-    return `Here's your personalized creation:
-    <div class="recipe-card">
-      <div class="recipe-title">${recipe.drinkName}</div>
-      <div class="recipe-subtitle">${recipe.tagline}</div>
-      <div class="recipe-section">
-        <div class="recipe-section-label">Ingredients</div>
-        <ul>${recipe.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
-      </div>
-      <div class="recipe-section">
-        <div class="recipe-section-label">Method</div>
-        <p>${recipe.instructions}</p>
-      </div>
-      <div class="recipe-section">
-        <div class="recipe-section-label">Garnish</div>
-        <p>${recipe.garnish}</p>
-      </div>
-      <div class="recipe-section">
-        <div class="recipe-section-label">Why it's you</div>
-        <p>${recipe.personalityMatch}</p>
-      </div>
-      <div class="personality-tag">✦ ${recipe.vibe}</div>
-    </div>`;
+    return 'Here is your personalized creation:<div class="recipe-card"><div class="recipe-title">' + recipe.drinkName + '</div><div class="recipe-subtitle">' + recipe.tagline + '</div><div class="recipe-section"><div class="recipe-section-label">Ingredients</div><ul>' + recipe.ingredients.map(function(i) { return '<li>' + i + '</li>'; }).join('') + '</ul></div><div class="recipe-section"><div class="recipe-section-label">Method</div><p>' + recipe.instructions + '</p></div><div class="recipe-section"><div class="recipe-section-label">Garnish</div><p>' + recipe.garnish + '</p></div><div class="recipe-section"><div class="recipe-section-label">Why it is you</div><p>' + recipe.personalityMatch + '</p></div><div class="personality-tag">✦ ' + recipe.vibe + '</div></div>';
   }
 
   async function sendMessage() {
-    const drinkInput = document.getElementById('drinkInput');
-    const personalityInput = document.getElementById('personalityInput');
-    const sendBtn = document.getElementById('sendBtn');
-
-    const drink = drinkInput.value.trim();
-    const personality = personalityInput.value.trim();
-
+    var drinkInput = document.getElementById('drinkInput');
+    var personalityInput = document.getElementById('personalityInput');
+    var sendBtn = document.getElementById('sendBtn');
+    var drink = drinkInput.value.trim();
+    var personality = personalityInput.value.trim();
     if (!drink || !personality) {
       if (!drink) drinkInput.focus();
       else personalityInput.focus();
-      return;h
+      return;
     }
-
-    const userMsg = `${drink} · ${personality}`;
-    addMessage(userMsg, true);
+    addMessage(drink + ' · ' + personality, true);
     drinkInput.value = '';
     personalityInput.value = '';
     sendBtn.disabled = true;
     addTyping();
-
     try {
-      const response = await fetch('/.netlify/functions/chat', {
+      var response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
-             headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                            drink,
-                                            systemPrompt: SYSTEM_PROMPT,
-                            personality,
-                })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ drink: drink, personality: personality, systemPrompt: SYSTEM_PROMPT })
       });
-      });
-
-      const data = await response.json();
+      var data = await response.json();
       removeTyping();
-
-      const text = data.content?.[0]?.text || '';
-      const clean = text.replace(/```json|```/g, '').trim();
-
+      var text = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : '';
+      var clean = text.replace(/```json|```/g, '').trim();
       try {
-        const recipe = JSON.parse(clean);
+        var recipe = JSON.parse(clean);
         addMessage(buildRecipeHTML(recipe), false);
-      } catch {
-        addMessage("I got a little creative and lost the recipe card. Could you try again?", false);
+      } catch(e) {
+        addMessage('I got a little creative and lost the recipe card. Could you try again?', false);
       }
-    } catch (err) {
+    } catch(err) {
       removeTyping();
-      addMessage("Something went wrong behind the bar. Please try again.", false);
+      addMessage('Something went wrong behind the bar. Please try again.', false);
     }
-
     sendBtn.disabled = false;
   }
 
-  // Enter key support
-  document.addEventListener('keydown', e => {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && (document.activeElement === document.getElementById('drinkInput') || document.activeElement === document.getElementById('personalityInput'))) {
       sendMessage();
     }
