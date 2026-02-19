@@ -18,15 +18,15 @@ exports.handler = async function(event) {
 
     const payload = JSON.stringify({
       model: 'claude-sonnet-4-5',
-      max_tokens: 1000,
+      max_tokens: 1024,
       system: systemPrompt,
       messages: [{
         role: 'user',
-        content: 'Spirit/Mocktail preference: ' + drink + '\nPersonality: ' + personality + '\n\nCraft my perfect drink.'
+        content: 'Spirit/Mocktail preference: ' + drink + '\nPersonality: ' + personality + '\n\nCraft my perfect drink. Respond with ONLY the JSON object, no other text.'
       }]
     });
 
-    const result = await new Promise((resolve, reject) => {
+    const rawResponse = await new Promise((resolve, reject) => {
       const options = {
         hostname: 'api.anthropic.com',
         path: '/v1/messages',
@@ -42,10 +42,7 @@ exports.handler = async function(event) {
       const req = https.request(options, (res) => {
         let data = '';
         res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          try { resolve(JSON.parse(data)); }
-          catch(e) { reject(new Error('Failed to parse: ' + data)); }
-        });
+        res.on('end', () => resolve(data));
       });
 
       req.on('error', reject);
@@ -53,16 +50,42 @@ exports.handler = async function(event) {
       req.end();
     });
 
+    console.log('Raw Anthropic response:', rawResponse);
+
+    const parsed = JSON.parse(rawResponse);
+
+    // Extract the text content from the response
+    const text = parsed.content && parsed.content[0] && parsed.content[0].text
+      ? parsed.content[0].text
+      : '';
+
+    console.log('Text from Claude:', text);
+
+    // Try to extract JSON - first strip markdown fences, then try regex
+    let clean = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+    // If it still doesn't start with {, try to find JSON block via regex
+    if (!clean.startsWith('{')) {
+      const match = clean.match(/\{[\s\S]*\}/);
+      if (match) clean = match[0];
+    }
+
+    console.log('Cleaned text:', clean);
+
+    // Return the full parsed API response plus the extracted clean JSON string
     return {
       statusCode: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(result)
+      body: JSON.stringify({
+        content: [{ type: 'text', text: clean }]
+      })
     };
 
   } catch (err) {
+    console.log('Error:', err.message);
     return {
       statusCode: 500,
       headers: { 'Access-Control-Allow-Origin': '*' },
