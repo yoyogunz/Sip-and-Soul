@@ -22,9 +22,9 @@
   body {
     background-color: var(--dark);
     color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;h
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow-x: hidden;h
     position: relative;
   }
 
@@ -634,7 +634,7 @@ Be creative with drink names. Make the recipe feel genuinely tailored to the per
     if (!drink || !personality) {
       if (!drink) drinkInput.focus();
       else personalityInput.focus();
-      return;
+      return;h
     }
 
     const userMsg = `${drink} · ${personality}`;
@@ -645,15 +645,15 @@ Be creative with drink names. Make the recipe feel genuinely tailored to the per
     addTyping();
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: [{ role: 'user', content: `Spirit/Mocktail preference: ${drink}\nPersonality: ${personality}\n\nCraft my perfect drink.` }]
-        })
+             headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                            drink,
+                                            systemPrompt: SYSTEM_PROMPT,
+                            personality,
+                })
+      });
       });
 
       const data = await response.json();
